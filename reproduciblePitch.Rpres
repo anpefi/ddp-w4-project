@@ -1,0 +1,51 @@
+Reproducible  Pitch
+========================================================
+author: Andrés Pérez Figueroa
+date:  2019-12-29
+autosize: true
+
+This is part of the Assignment for Coursera's Developing Data Products.
+
+Here I present my shiny app (https://anpefi.shinyapps.io/coursera_project_ddp4/) developed for this course.
+
+All the code for the app and this presentation can be found in this github repo: https://github.com/anpefi/ddp-w4-project
+
+App to analyse my running activities
+========================================================
+
+- Own data about my weight and running activities
+- User can filter type, distance and dates of activities to be analyzed
+- Summary statistics od the activities
+- Table with the ctivities filtered
+- Plot with the relationship between my weight and the pace of the runs.
+- Perform a linear model of this relationship to predict how many seconds per kilometer slower I can run when I gain one Kg in weight
+                
+
+Example
+========================================================
+
+Let's assume that the user choose the default values: Only races (excluding training runs) of any distance in all the period (2011-2019). This are the summary stattistics
+
+```{r}
+library(tidyverse)
+data <- read_csv("my_runs/data/running_data.csv")
+data %>% filter(Type=="Race") %>%summarise(n=n(),'Mean Duration'=hms::as_hms(round(mean(Duration))), 'Mean Pace'=hms::as_hms(round(mean(Pace)))) 
+```
+
+
+Regresion model
+========================================================
+This is the model implemented in the server.R
+
+```{r, echo=FALSE}
+lm(as.numeric(lubridate::seconds(Pace)) ~ Weight, data) %>% summary
+```
+
+Plot
+========================================================
+And, finally, this is the plot displayed including the linear model
+```{r fig.width=16}
+data %>% ggplot(aes(x=Weight,y=Pace,color=Distance)) + geom_point() +
+            geom_smooth(method = "lm") + labs(x="Weight (Kg)", y="Pace (h:m:s/Km)")
+```
+
