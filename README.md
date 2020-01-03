@@ -6,3 +6,6 @@ This peer assessed assignment has two parts. First, you will create a Shiny appl
 ## Shiny Application
 Deployed at https://anpefi.shinyapps.io/coursera_project_ddp4/
 
+## Reproducible Pitch
+Deployed at http://rpubs.com/anpefi/coursera-ddp-assig4
+
